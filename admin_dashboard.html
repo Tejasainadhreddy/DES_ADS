@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container py-5 mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h2 class="fw-bold">Team_7 <span class="text-danger">Master Ledger</span></h2>
+        <a href="/add-courier" class="btn btn-danger fw-bold shadow px-4">Register New Shipment</a>
+    </div>
+
+    <div class="row text-center mb-5 g-4">
+        <div class="col-md-4"><div class="card p-4 border-0 shadow-sm bg-white">Registered Users<br><h3 class="fw-bold text-primary">{{ u_count }}</h3></div></div>
+        <div class="col-md-4"><div class="card p-4 border-0 shadow-sm bg-white">Total Parcels<br><h3 class="fw-bold text-danger">{{ t_orders }}</h3></div></div>
+        <div class="col-md-4"><div class="card p-4 border-0 shadow-sm bg-white">Active Users<br><h3 class="fw-bold text-success">{{ users|length }}</h3></div></div>
+    </div>
+
+    <div class="row mb-4 g-3">
+        <div class="col-md-8">
+            <div class="input-group shadow-sm">
+                <span class="input-group-text bg-white border-0"><i class="bi bi-search"></i></span>
+                <input type="text" id="adminSearch" class="form-control border-0 py-2" placeholder="Search by Tracking ID or Route...">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <select id="statusFilter" class="form-select border-0 shadow-sm py-2">
+                <option value="">All Statuses</option>
+                <option value="Pickup Requested">Pickup Requested</option>
+                <option value="In Transit">In Transit</option>
+                <option value="Awaiting Approval">Awaiting Approval</option>
+                <option value="Delivered">Delivered</option>
+            </select>
+        </div>
+    </div>
+
+    <h4 class="fw-bold mb-3">All Orders</h4>
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
+        <table class="table table-hover align-middle mb-0 bg-white text-center" id="ordersTable">
+            <thead class="table-dark">
+                <tr><th>Tracking ID</th><th>Route</th><th>Weight</th><th>Status</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+                {% for c in couriers %}
+                <tr class="order-row">
+                    <td class="fw-bold text-danger tracking-id">{{ c.cons_no }}</td>
+                    <td class="route-info">{{ c.ship_name }} → {{ c.rev_name }}</td>
+                    <td>{{ c.weight }} kg</td>
+                    <td><span class="badge bg-light text-dark status-text">{{ c.est_delivery }}</span></td>
+                    <td><a href="/update-status?cons_no={{ c.cons_no }}" class="btn btn-sm btn-dark px-3 rounded-pill">Update Status</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('adminSearch');
+            const statusFilter = document.getElementById('statusFilter');
+            const rows = document.querySelectorAll('.order-row');
+
+            function filterTable() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const selectedStatus = statusFilter.value.toLowerCase();
+
+                rows.forEach(row => {
+                    const trackingId = row.querySelector('.tracking-id').textContent.toLowerCase();
+                    const route = row.querySelector('.route-info').textContent.toLowerCase();
+                    const status = row.querySelector('.status-text').textContent.toLowerCase();
+
+                    const matchesSearch = trackingId.includes(searchTerm) || route.includes(searchTerm);
+                    const matchesStatus = selectedStatus === "" || status === selectedStatus;
+
+                    if (matchesSearch && matchesStatus) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            }
+
+            searchInput.addEventListener('keyup', filterTable);
+            statusFilter.addEventListener('change', filterTable);
+        });
+    </script>
+
+    </div>
+{% endblock %}

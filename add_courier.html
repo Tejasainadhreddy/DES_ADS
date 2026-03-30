@@ -1,0 +1,100 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container py-5 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 card border-0 shadow-lg p-5 rounded-5 bg-white">
+            <h3 class="fw-bold text-center text-danger mb-4">Register New Shipment</h3>
+            <form method="POST">
+                <div class="row g-3">
+                    <!-- Sender -->
+                    <div class="col-12"><h5 class="fw-bold text-muted">Sender Information</h5></div>
+                    <div class="col-md-6">
+                        <label class="small fw-bold">Sender Name</label>
+                        <input type="text" name="ship_name" class="form-control bg-light border-0 py-2" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="small fw-bold">Sender Phone</label>
+                        <input type="tel" name="sender_phone" class="form-control bg-light border-0 py-2" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="small fw-bold">Sender Email</label>
+                        <input type="email" name="sender_email" class="form-control bg-light border-0 py-2">
+                    </div>
+                    <div class="col-12">
+                        <label class="small fw-bold">Sender Full Address</label>
+                        <textarea name="sender_address" class="form-control bg-light border-0 py-2" rows="2" required></textarea>
+                    </div>
+
+                    <!-- Receiver -->
+                    <div class="col-12 mt-4"><h5 class="fw-bold text-muted">Receiver Information</h5></div>
+                    <div class="col-md-6">
+                        <label class="small fw-bold">Receiver Name</label>
+                        <input type="text" name="rev_name" class="form-control bg-light border-0 py-2" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="small fw-bold">Receiver Phone</label>
+                        <input type="tel" name="receiver_phone" class="form-control bg-light border-0 py-2" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="small fw-bold">Receiver Email</label>
+                        <input type="email" name="receiver_email" class="form-control bg-light border-0 py-2">
+                    </div>
+                    <div class="col-12">
+                        <label class="small fw-bold">Receiver Full Address</label>
+                        <textarea name="receiver_address" class="form-control bg-light border-0 py-2" rows="2" required></textarea>
+                    </div>
+
+                    <!-- Parcel -->
+                    <div class="col-12 mt-4"><h5 class="fw-bold text-muted">Parcel Details</h5></div>
+                    <div class="col-md-3">
+                        <label class="small fw-bold">Weight (kg)</label>
+                        <input type="number" step="0.1" name="weight" class="form-control bg-light border-0 py-2" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small fw-bold">No. of Pieces</label>
+                        <input type="number" name="no_of_pieces" value="1" class="form-control bg-light border-0 py-2" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small fw-bold">Package Type</label>
+                        <select name="p_type" class="form-select bg-light border-0 py-2">
+                            <option>Box</option>
+                            <option>Pallet</option>
+                            <option>Envelope</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small fw-bold">Priority</label>
+                        <select name="priority" class="form-select bg-light border-0 py-2">
+                            <option>Standard</option>
+                            <option>Express</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="small fw-bold">Description of Contents</label>
+                        <input type="text" name="contents_description" class="form-control bg-light border-0 py-2" placeholder="Books, Electronics, Documents...">
+                    </div>
+                    <div class="col-12">
+                        <label class="small fw-bold">Special Instructions</label>
+                        <textarea name="special_instructions" class="form-control bg-light border-0 py-2" rows="2" placeholder="Fragile, Leave at door, etc."></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-danger w-100 fw-bold py-3 mt-4 rounded-pill shadow">SAVE & GENERATE TRACKING ID</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% if success_id %}
+<div class="modal fade show d-block" style="background: rgba(0,0,0,0.6); z-index: 2000;" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4 p-5 text-center">
+            <div class="text-success mb-3"><i class="bi bi-check-circle-fill display-1"></i></div>
+            <h2 class="fw-bold text-dark">Shipment Saved Successfully</h2>
+            <p class="text-muted">Tracking Number:</p>
+            <h1 class="text-danger fw-bold mb-4">{{ success_id }}</h1>
+            <a href="/admin_dashboard" class="btn btn-dark px-5 py-2 rounded-pill fw-bold">GO TO MASTER LEDGER</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

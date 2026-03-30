@@ -1,0 +1,123 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+    .results-container { 
+        margin-top: 50px; 
+        padding: 40px; 
+        background: #fff; 
+        border: 1px solid #eee; 
+        border-radius: 16px; 
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+    }
+    .status-header { 
+        border-bottom: 2px solid #f8f9fa; 
+        margin-bottom: 30px; 
+        padding-bottom: 20px; 
+    }
+    .consignment-id { 
+        font-size: 2rem; 
+        font-weight: 700; 
+        color: #d32f2f; 
+    }
+    .history-table thead { 
+        background-color: #fdfdfd; 
+        border-bottom: 3px solid #d32f2f; 
+    }
+    .status-badge { 
+        background-color: #d32f2f; 
+        color: white; 
+        padding: 6px 18px; 
+        border-radius: 30px; 
+        font-size: 0.85rem; 
+        font-weight: 600; 
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="results-container">
+        <div class="status-header d-flex justify-content-between align-items-center">
+            <div>
+                <span class="consignment-label">Consignment Number</span>
+                <div class="consignment-id">{{ shipment.cons_no }}</div>
+            </div>
+            <div class="text-end">
+                <span class="consignment-label">Current Status</span>
+                <div><span class="status-badge">{{ updates[0].status if updates else 'Pending' }}</span></div>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <!-- Sender Information -->
+            <div class="col-md-6 border-end">
+                <h6 class="fw-bold mb-3 text-uppercase small text-muted">Sender Information</h6>
+                <p class="mb-1 fw-bold">{{ shipment.ship_name }}</p>
+                <p class="text-muted small">{{ shipment.sender_address }}</p>
+                <p class="small text-muted">{{ shipment.sender_phone }} • {{ shipment.sender_email or 'N/A' }}</p>
+            </div>
+            
+            <!-- Receiver Information -->
+            <div class="col-md-6 ps-md-4">
+                <h6 class="fw-bold mb-3 text-uppercase small text-muted">Receiver Information</h6>
+                <p class="mb-1 fw-bold">{{ shipment.rev_name }}</p>
+                <p class="text-muted small">{{ shipment.receiver_address }}</p>
+                <p class="small text-muted">{{ shipment.receiver_phone }} • {{ shipment.receiver_email or 'N/A' }}</p>
+            </div>
+        </div>
+
+        <!-- Parcel Details -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h6 class="fw-bold mb-3 text-uppercase small text-muted">Parcel Details</h6>
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <strong>Weight:</strong><br>{{ shipment.weight }} kg
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Pieces:</strong><br>{{ shipment.no_of_pieces }}
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Type:</strong><br>{{ shipment.p_type }}
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Priority:</strong><br>{{ shipment.priority }}
+                    </div>
+                </div>
+                {% if shipment.contents_description %}
+                <p class="mt-3"><strong>Contents:</strong> {{ shipment.contents_description }}</p>
+                {% endif %}
+                {% if shipment.special_instructions %}
+                <p><strong>Special Instructions:</strong> {{ shipment.special_instructions }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <h6 class="fw-bold mb-4 text-uppercase small text-muted">Transit History</h6>
+        <div class="table-responsive">
+            <table class="table history-table">
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Location</th>
+                        <th>Update</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for update in updates %}
+                    <tr>
+                        <td>{{ update.update_time.strftime('%b %d, %Y • %I:%M %p') }}</td>
+                        <td>{{ update.current_city }}</td>
+                        <td><span class="status-badge">{{ update.status }}</span></td>
+                        <td>{{ update.comments or '—' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="/" class="btn btn-dark px-5 py-3 rounded-pill fw-bold">Back to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="bg-danger p-5 text-center text-white">
+                    <i class="bi bi-headset fs-1 mb-2"></i>
+                    <h2 class="fw-bold mb-0">Customer Support</h2>
+                    <p class="text-white-50 mb-0">Team_7 is here to help you</p>
+                </div>
+                <div class="card-body p-4 p-md-5 bg-white">
+                    <form method="POST" action="/about">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small text-muted text-uppercase">Full Name</label>
+                            <input type="text" name="name" class="form-control bg-light border-0" placeholder="John Doe" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small text-muted text-uppercase">Email Address</label>
+                            <input type="email" name="email" class="form-control bg-light border-0" placeholder="john@example.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small text-muted text-uppercase">Nature of Concern</label>
+                            <select name="subject" class="form-select bg-light border-0" required>
+                                <option value="" disabled selected>Select an option...</option>
+                                <option value="Late Delivery">Late Delivery</option>
+                                <option value="Tracking Issue">Tracking Issue</option>
+                                <option value="General Feedback">General Feedback</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold small text-muted text-uppercase">Your Message</label>
+                            <textarea name="message" class="form-control bg-light border-0" rows="4" placeholder="Describe your issue..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100 fw-bold py-3 rounded-3 shadow-sm mb-3">Submit Inquiry</button>
+                        <div class="text-center"><a href="/" class="text-muted small text-decoration-none">Back to Home</a></div>
+                    </form>
+                </div>
+            </div>
+            <div class="text-center mt-4 text-muted small">© 2026 Team_7 Logistics Solutions</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
